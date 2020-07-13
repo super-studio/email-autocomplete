@@ -1,18 +1,38 @@
 "use strict";
 
-(function ($, window, document, undefined) {
+(function ($, _window, _document, undefined) {
 
   var pluginName = "emailautocomplete";
   var defaults = {
     suggClass: "eac-sugg",
-    domains: ["yahoo.com" ,"hotmail.com" ,"gmail.com" ,"me.com" ,"aol.com" ,"mac.com" ,"live.com" ,"comcast.net" ,"googlemail.com" ,"msn.com" ,"hotmail.co.uk" ,"yahoo.co.uk" ,"facebook.com" ,"verizon.net" ,"sbcglobal.net" ,"att.net" ,"gmx.com" ,"outlook.com" ,"icloud.com"]
+    domains: [
+      'gmail.com',
+      'docomo.ne.jp',
+      'yahoo.co.jp',
+      'yahoo.ne.jp',
+      'ezweb.ne.jp',
+      'icloud.com',
+      'i.softbank.jp',
+      'softbank.ne.jp',
+      'ymobile.ne.jp',
+      'hotmail.co.jp'
+    ],
+    mergeDomains: true
   };
 
   function EmailAutocomplete(elem, options) {
     this.$field = $(elem);
     this.options = $.extend(true, {}, defaults, options); //we want deep extend
     this._defaults = defaults;
-    this._domains = this.options.domains;
+    if (this.options.domains && Array.isArray(this.options.domains)) {
+      if (defaults.mergeDomains) {
+        this._domains = $.merge(this.options.domains, defaults.domains); // head elements are suggested in first
+      } else {
+        this._domains = this.options.domains;
+      }
+    } else {
+      this._domains = defaults.domains;
+    }
     this.init();
   }
 
