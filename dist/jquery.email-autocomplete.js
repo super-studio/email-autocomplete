@@ -24,7 +24,7 @@
       'ymobile.ne.jp',
       'hotmail.co.jp'
     ],
-    mergeDomains: true
+    overwriteDomains: true // overwrite with options or merge with defaults
   };
 
   function EmailAutocomplete(elem, options) {
@@ -32,10 +32,10 @@
     this.options = $.extend(true, {}, defaults, options); //we want deep extend
     this._defaults = defaults;
     if (this.options.domains && Array.isArray(this.options.domains)) {
-      if (defaults.mergeDomains) {
-        this._domains = $.merge(this.options.domains, defaults.domains); // head elements are suggested in first
-      } else {
+      if (this.options.overwriteDomains) {
         this._domains = this.options.domains;
+      } else {
+        this._domains = $.merge(this.options.domains, defaults.domains); // head elements are suggested in first
       }
     } else {
       this._domains = defaults.domains;
