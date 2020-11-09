@@ -51,7 +51,7 @@
 
       //wrap our field
       var $wrap = $("<div class='eac-input-wrap' />").css({
-        display: this.$field.css("display"),
+        // display: this.$field.css("display"),
         position: this.$field.css("position") === 'static' ? 'relative' : this.$field.css("position"),
         fontSize: this.$field.css("fontSize")
       });
