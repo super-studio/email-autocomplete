@@ -17,7 +17,8 @@
       'ymobile.ne.jp',
       'hotmail.co.jp'
     ],
-    overwriteDomains: true // overwrite with options or merge with defaults
+    overwriteDomains: true, // overwrite with options or merge with defaults
+    afterAutoComplete: function() {}
   };
 
   function EmailAutocomplete(elem, options) {
@@ -33,6 +34,7 @@
     } else {
       this._domains = defaults.domains;
     }
+    this._afterAutoComplete = this.options.afterAutoComplete;
     this.init();
   }
 
@@ -107,7 +109,9 @@
         return "";
       }
 
+      // console.log('-------------', str, '--------------');
       var match = this._domains.filter(function (domain) {
+        // console.log(str, domain, domain.indexOf(str));
         return domain.indexOf(str) === 0;
       }).shift() || "";
 
@@ -118,9 +122,11 @@
       if(typeof this.suggestion === "undefined" || this.suggestion.length < 1){
         return false;
       }
-      this.$field.val(this.val + this.suggestion);
+      var value = this.val + this.suggestion;
+      this.$field.val(value);
       this.$suggOverlay.text("");
       this.$cval.text("");
+      this._afterAutoComplete(value);
     },
 
     /**
@@ -128,6 +134,7 @@
      */
     displaySuggestion: function (e) {
       this.val = this.$field.val();
+      // console.log('val', this.val);
       this.suggestion = this.suggest(this.val);
 
       if (!this.suggestion.length) {
